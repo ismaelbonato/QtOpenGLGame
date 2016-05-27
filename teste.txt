@@ -1,0 +1,33 @@
+glClearColor(0.2,0.2,0.2,1);
+    Camera.Position_Camera(0, 2.5f, 5,	0, 2.5f, 0,   0, 1, 0);
+    ShowCursor(FALSE);		// Hide Mouse Pointer
+
+    //Luz avermelhada (sala com lava?)
+    GLfloat ambientLight[] = {1.0, 1.0, 1.0, 1.0};
+
+    //Habilitamos a capacidade de iluminação
+    glEnable(GL_LIGHTING);
+
+    //Configuramos a OpenGL para utilizar como luz ambiente global
+    //a iluminação definida por ambientLight[]
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
+
+    // Carregando textura na caixa.
+     glEnable(GL_TEXTURE_2D);
+     glShadeModel(GL_SMOOTH);
+    QImage img = convertToGLFormat(QImage(":/img/Crate.bmp"));
+    glGenTextures(1, texture);
+
+
+    // Texture using mipmaps
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, 3, img.width(), img.height(), GL_RGBA, GL_UNSIGNED_BYTE, img.bits());
+
+
+     // configurando luz
+        GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+
+        //anti aliasing
+       // glEnable( GL_LINE_SMOOTH );
