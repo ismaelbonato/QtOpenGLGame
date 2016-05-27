@@ -1,10 +1,9 @@
-﻿#include "glwidget.h"
+﻿#include "MyGLWidget.h"
 #include <QMessageBox>
 #include <QStatusBar>
 #include <QMouseEvent>
 #include <QApplication>
 #include "GL/glu.h"
-
 
 camera Camera;
 

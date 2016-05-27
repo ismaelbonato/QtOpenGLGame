@@ -2,7 +2,7 @@
 #include <QDebug>
 
 
-#include "glwidget.h"
+#include "MyGLWidget.h"
 
 int main(int argc, char *argv[])
 {

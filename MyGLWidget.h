@@ -1,5 +1,5 @@
-#ifndef GLWIDGET_H
-#define GLWIDGET_H
+#ifndef MYGLWIDGET_H
+#define MYGLWIDGET_H
 
 #include <QOpenGLTexture>
 
