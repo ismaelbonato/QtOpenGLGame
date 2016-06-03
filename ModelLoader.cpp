@@ -1,3 +1,7 @@
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing fla
+
 #include "ModelLoader.h"
 
 bool ModelLoader::Load(QString pathToFile)

@@ -6,6 +6,7 @@ TARGET = QtOpenGLGame
 TEMPLATE = app
 
 LIBS = -lGLU
+LIBS += -lassimp
 
 #LIBS += -L/usr/lib/x86_64-linux-gnu/mesa/
 #LIBS += -L/usr/bin/assimp

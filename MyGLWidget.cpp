@@ -5,6 +5,8 @@
 #include <QApplication>
 #include "GL/glu.h"
 
+#include "ModelLoader.h"
+
 camera Camera;
 
 bool* keyStates = new bool[256]; // Create an array of boolean values of length 256 (0-255)
@@ -43,54 +45,77 @@ void GLWidget::initializeGL(){
 
     //Auto = new MilkshapeModel();									// Memory To Hold The Model
    //        if ( Auto->loadModelData( "Auto.ms3d" ) == false )		// Loads The Model And Checks For Errors
-            {
+      //      {
 
                 //int ret = QMessageBox::warning(this, tr(""),tr("erro ao carregar modelo"), QMessageBox::Cancel);
-            }
+        //    }
+
+    ModelLoader model;
+
+    if (!model.Load("head.3ds"))
+    {
+        m_error = true;
+        return;
+    }
+
+    QVector<float> *vertices;
+    QVector<float> *normals;
+    QVector<unsigned int> *indices;
+
+    model.getBufferData(&vertices, &normals, &indices);
+
+    m_rootNode = model.getNodeData();
 
 
-         // Carregando textura do pizo.
-         glShadeModel(GL_SMOOTH);
-         QImage img = convertToGLFormat(QImage(":/img/Concreto2.jpg"));
-         glGenTextures(1, &texture[0]);
-
-         glBindTexture( GL_TEXTURE_2D, texture[0] );
-        // Texture using mipmaps
-         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 
 
-          gluBuild2DMipmaps(GL_TEXTURE_2D, 3, img.width(), img.height(), GL_RGBA, GL_UNSIGNED_BYTE, img.bits());
 
 
-         QImage b;
-
-         // carregando textura da caixa de madeira.
-
-         if ( !b.load( ":/img/Crate.bmp"))
-         {
-               //qWarning( "Could not read image file, using single-color instead." );
-               b = QImage( 16, 16, QImage::Format_RGB888 );
-               b.fill( QColor(Qt::green).rgb() );
-         }
-         img = convertToGLFormat(b);
-         glGenTextures(1, &texture[1]);
-         glBindTexture( GL_TEXTURE_2D, texture[1] );
-
-         glTexImage2D( GL_TEXTURE_2D, 0, 3, img.width(), img.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, img.bits() );
-         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
 
-         //Luz avermelhada (sala com lava?)
-         GLfloat ambientLight[] = {1.0f, 1.0f, 1.0f, 1.0f};
 
-         //Habilitamos a capacidade de ilumina??o
-         glEnable(GL_LIGHTING);
+    // Carregando textura do pizo.
+    glShadeModel(GL_SMOOTH);
+    QImage img = convertToGLFormat(QImage(":/img/Concreto2.jpg"));
+    glGenTextures(1, &texture[0]);
 
-         //Configuramos a OpenGL para utilizar como luz ambiente global
-         //a ilumina??o definida por ambientLight[]
-         glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
+    glBindTexture( GL_TEXTURE_2D, texture[0] );
+    // Texture using mipmaps
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+
+
+    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, img.width(), img.height(), GL_RGBA, GL_UNSIGNED_BYTE, img.bits());
+
+
+    QImage b;
+
+    // carregando textura da caixa de madeira.
+
+    if ( !b.load( ":/img/Crate.bmp"))
+    {
+       //qWarning( "Could not read image file, using single-color instead." );
+       b = QImage( 16, 16, QImage::Format_RGB888 );
+       b.fill( QColor(Qt::green).rgb() );
+    }
+    img = convertToGLFormat(b);
+    glGenTextures(1, &texture[1]);
+    glBindTexture( GL_TEXTURE_2D, texture[1] );
+
+    glTexImage2D( GL_TEXTURE_2D, 0, 3, img.width(), img.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, img.bits() );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+
+    //Luz avermelhada (sala com lava?)
+    GLfloat ambientLight[] = {1.0f, 1.0f, 1.0f, 1.0f};
+
+    //Habilitamos a capacidade de ilumina??o
+    glEnable(GL_LIGHTING);
+
+    //Configuramos a OpenGL para utilizar como luz ambiente global
+    //a ilumina??o definida por ambientLight[]
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
 
 
 }
