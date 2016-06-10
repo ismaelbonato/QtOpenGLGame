@@ -43,16 +43,12 @@ void GLWidget::initializeGL(){
 
     QApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
 
-    //Auto = new MilkshapeModel();									// Memory To Hold The Model
-   //        if ( Auto->loadModelData( "Auto.ms3d" ) == false )		// Loads The Model And Checks For Errors
-      //      {
+    //int ret = QMessageBox::warning(this, tr(""),tr("erro ao carregar modelo"), QMessageBox::Cancel);
 
-                //int ret = QMessageBox::warning(this, tr(""),tr("erro ao carregar modelo"), QMessageBox::Cancel);
-        //    }
 
+    /*  if (!model.Load("head.3ds"))
     ModelLoader model;
 
-    if (!model.Load("head.3ds"))
     {
         m_error = true;
         return;
@@ -65,6 +61,7 @@ void GLWidget::initializeGL(){
     model.getBufferData(&vertices, &normals, &indices);
 
     m_rootNode = model.getNodeData();
+    */
 
 
 

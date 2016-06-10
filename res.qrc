@@ -4,4 +4,7 @@
         <file>Crate.bmp</file>
         <file>terra.bmp</file>
     </qresource>
+    <qresource prefix="/Models">
+        <file>bola.obj</file>
+    </qresource>
 </RCC>
