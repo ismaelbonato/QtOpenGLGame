@@ -11,7 +11,7 @@ camera Camera;
 
 bool* keyStates = new bool[256]; // Create an array of boolean values of length 256 (0-255)
 
-GLWidget::GLWidget(QWidget *parent) :
+MyGLWidget::MyGLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
       //qApp->installEventFilter(this);
@@ -22,10 +22,11 @@ GLWidget::GLWidget(QWidget *parent) :
         connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
 }
 // Destructor
-GLWidget::~GLWidget() {
+MyGLWidget::~MyGLWidget() {
          glDeleteTextures(1, texture);
 }
-void GLWidget::initializeGL(){
+
+void MyGLWidget::initializeGL(){
 
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
@@ -44,31 +45,6 @@ void GLWidget::initializeGL(){
     QApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
 
     //int ret = QMessageBox::warning(this, tr(""),tr("erro ao carregar modelo"), QMessageBox::Cancel);
-
-
-    /*  if (!model.Load("head.3ds"))
-    ModelLoader model;
-
-    {
-        m_error = true;
-        return;
-    }
-
-    QVector<float> *vertices;
-    QVector<float> *normals;
-    QVector<unsigned int> *indices;
-
-    model.getBufferData(&vertices, &normals, &indices);
-
-    m_rootNode = model.getNodeData();
-    */
-
-
-
-
-
-
-
 
 
     // Carregando textura do pizo.
@@ -116,7 +92,7 @@ void GLWidget::initializeGL(){
 
 
 }
-void GLWidget::resizeGL(int width,int height){
+void MyGLWidget::resizeGL(int width,int height){
 
     glViewport( 0, 0, (GLint)width, (GLint)height );
 
@@ -128,7 +104,7 @@ void GLWidget::resizeGL(int width,int height){
 
 
 }
-void GLWidget::paintGL(){
+void MyGLWidget::paintGL(){
 
     glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
     glClearDepth(1.0f);
@@ -168,7 +144,7 @@ void GLWidget::paintGL(){
         timer->start(qMax(0, 30 - delay));
 
 }
-void GLWidget::keyPressEvent(QKeyEvent *event){
+void MyGLWidget::keyPressEvent(QKeyEvent *event){
 
     switch(event->key()){
         case Qt::Key_Escape:
@@ -178,19 +154,19 @@ void GLWidget::keyPressEvent(QKeyEvent *event){
     if((event->key()>31) && (event->key()<132))
        keyStates[event->key()]=true;
 }
-void GLWidget::keyReleaseEvent(QKeyEvent *event){
+void MyGLWidget::keyReleaseEvent(QKeyEvent *event){
 
     if((event->key()>31) && (event->key()<132))
         keyStates[event->key()]=false;
 }
-void GLWidget::Keyboard_Operations(){
+void MyGLWidget::Keyboard_Operations(){
 
     if(keyStates['W']==true)Camera.Move_Camera(CAMERASPEED);
     if(keyStates['S']==true)Camera.Move_Camera(-CAMERASPEED);
     if(keyStates['A']==true)Camera.Move_Lateral_Camera(-LATERALSPEED);
     if(keyStates['D']==true)Camera.Move_Lateral_Camera(LATERALSPEED);
 }
-void GLWidget::drawCube() {
+void MyGLWidget::drawCube() {
 
 
     glEnable(GL_TEXTURE_2D);
@@ -246,7 +222,7 @@ void GLWidget::drawCube() {
         glDisable(GL_TEXTURE_2D);
 
 }
-void GLWidget::terra()	// Draws the Ground
+void MyGLWidget::terra()	// Draws the Ground
 {
 
 
@@ -280,143 +256,4 @@ void GLWidget::terra()	// Draws the Ground
 
         glPopMatrix();
         glDisable(GL_TEXTURE_2D);
-}
-void GLWidget::DefineLuzESPECULAR()
-{
-    int LuzAmbEhMax = 1;
-
-
-    // Define cores para um objeto dourado
-      GLfloat LuzAmbiente[]   = {0.24725f, 0.1995f, 0.07f } ;
-      GLfloat LuzAmbienteMAX[]   = {1,1,1 } ;
-
-      GLfloat LuzDifusa[]   = {0.75164f, 0.60648f, 0.22648f, 1.0f };
-      GLfloat LuzEspecular[] = {0.626281f, 0.555802f, 0.366065f, 1.0f };
-      //GLfloat LuzEspecular[] = {1,0,0, 1.0f };
-      GLfloat PosicaoLuz0[]  = {3.0f, 3.0f, 0.0f, 1.0f };
-      GLfloat PosicaoLuz1[]  = {-3.0f, -3.0f, 0.0f, 1.0f };
-      GLfloat Especularidade[] = {1.0f, 1.0f, 1.0f, 1.0f };
-
-       // ****************  Fonte de Luz 0
-
-            glEnable ( GL_COLOR_MATERIAL );
-
-
-       // Habilita o uso de ilumina??o
-      glEnable(GL_LIGHTING);
-
-      // Ativa o uso da luz ambiente
-      glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LuzAmbiente);
-      // Define os parametros da Luz n?mero Zero
-      if (LuzAmbEhMax)
-              glLightfv(GL_LIGHT0, GL_AMBIENT, LuzAmbienteMAX);
-      else glLightfv(GL_LIGHT0, GL_AMBIENT, LuzAmbiente);
-
-      glLightfv(GL_LIGHT0, GL_DIFFUSE, LuzDifusa  );
-      glLightfv(GL_LIGHT0, GL_SPECULAR, LuzEspecular  );
-      glLightfv(GL_LIGHT0, GL_POSITION, PosicaoLuz0 );
-      glEnable(GL_LIGHT0);
-
-      // Ativa o "Color Tracking"
-      glEnable(GL_COLOR_MATERIAL);
-
-      // Define a reflectancia do material
-      glMaterialfv(GL_FRONT,GL_SPECULAR, Especularidade);
-
-      // Define a concentra??o do brilho.
-      // Quanto maior o valor do Segundo parametro, mais
-      // concentrado ser? o brilho. (Valores v?lidos: de 0 a 128)
-      glMateriali(GL_FRONT,GL_SHININESS,112);
-
-      // ****************  Fonte de Luz 1
-
-      // Ativa o uso da luz ambiente
-      glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LuzAmbiente);
-      // Define os parametros da Luz n?mero Zero
-      if (LuzAmbEhMax)
-              glLightfv(GL_LIGHT1, GL_AMBIENT, LuzAmbienteMAX);
-      else glLightfv(GL_LIGHT1, GL_AMBIENT, LuzAmbiente);
-      glLightfv(GL_LIGHT1, GL_DIFFUSE, LuzDifusa  );
-      glLightfv(GL_LIGHT1, GL_SPECULAR, LuzEspecular  );
-      glLightfv(GL_LIGHT1, GL_POSITION, PosicaoLuz1 );
-      glEnable(GL_LIGHT1);
-
-      // Ativa o "Color Tracking"
-      glEnable(GL_COLOR_MATERIAL);
-
-      // Define a reflectancia do material
-      glMaterialfv(GL_FRONT,GL_SPECULAR, Especularidade);
-
-      // Define a concentra??o do brilho.
-      // Quanto maior o valor do Segundo parametro, mais
-      // concentrado ser? o brilho. (Valores v?lidos: de 0 a 128)
-      glMateriali(GL_FRONT,GL_SHININESS,11);
-    //  glMateriali(GL_FRONT,GL_SHININESS,20);
-}
-void GLWidget::DefineLuzDIFUSA()
-{
-    int LuzAmbEhMax = 1;
-
-    // Define cores para um objeto dourado
-  GLfloat LuzAmbiente[]   = {0.24725f, 0.1995f, 0.07f } ;
-  //GLfloat LuzAmbiente[]   = {0,0,0} ;
-  GLfloat LuzAmbienteMAX[]   = {1,1,1 } ;
-  GLfloat LuzDifusa[]   = {0.75164f, 0.60648f, 0.22648f, 1.0f };
-  GLfloat LuzEspecular[] = {0,0,0, 1.0f };
-  GLfloat PosicaoLuz0[]  = {3.0f, 3.0f, 0.0f, 1.0f };
-  GLfloat PosicaoLuz1[]  = {-3.0f, -3.0f, 0.0f, 1.0f };
-  GLfloat Especularidade[] = {0,0,0,1 };
-
-   // ****************  Fonte de Luz 0
-
-  glEnable ( GL_COLOR_MATERIAL );
-
-
-   // Habilita o uso de ilumina??o
-  glEnable(GL_LIGHTING);
-
-  // Ativa o uso da luz ambiente
-  if (LuzAmbEhMax)
-          glLightfv(GL_LIGHT0, GL_AMBIENT, LuzAmbienteMAX);
-  else glLightfv(GL_LIGHT0, GL_AMBIENT, LuzAmbiente);
-  // Define os parametros da Luz n?mero Zero
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, LuzDifusa  );
-  glLightfv(GL_LIGHT0, GL_SPECULAR, LuzEspecular  );
-  glLightfv(GL_LIGHT0, GL_POSITION, PosicaoLuz0 );
-  glEnable(GL_LIGHT0);
-
-  // Ativa o "Color Tracking"
-  glEnable(GL_COLOR_MATERIAL);
-
-  // Define a reflectancia do material
-  //glMaterialfv(GL_FRONT,GL_SPECULAR, Especularidade);
-
-  // Define a concentra??o do brilho.
-  // Quanto maior o valor do Segundo parametro, mais
-  // concentrado ser? o brilho. (Valores v?lidos: de 0 a 128)
-  glMateriali(GL_FRONT,GL_SHININESS,51);
-
-  // ****************  Fonte de Luz 1
-
-  // Ativa o uso da luz ambiente
-  if (LuzAmbEhMax)
-          glLightfv(GL_LIGHT1, GL_AMBIENT, LuzAmbienteMAX);
-  else glLightfv(GL_LIGHT1, GL_AMBIENT, LuzAmbiente);
-  // Define os parametros da Luz n?mero Zero
-  glLightfv(GL_LIGHT1, GL_DIFFUSE, LuzDifusa  );
-  glLightfv(GL_LIGHT1, GL_SPECULAR, LuzEspecular  );
-  glLightfv(GL_LIGHT1, GL_POSITION, PosicaoLuz1 );
-  glEnable(GL_LIGHT1);
-
-  // Ativa o "Color Tracking"
-  glEnable(GL_COLOR_MATERIAL);
-
-  // Define a reflectancia do material
-  //glMaterialfv(GL_FRONT,GL_SPECULAR, Especularidade);
-
-  // Define a concentra??o do brilho.
-  // Quanto maior o valor do Segundo parametro, mais
-  // concentrado ser? o brilho. (Valores v?lidos: de 0 a 128)
-  //glMateriali(GL_FRONT,GL_SHININESS,20);
-
 }
