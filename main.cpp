@@ -2,13 +2,13 @@
 #include <QDebug>
 
 
-#include "glwidget.h"
+#include "MyGLWidget.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    GLWidget Game;
+    MyGLWidget Game;
 
     Game.resize(1280,720);
     Game.show();

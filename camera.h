@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "glwidget.h"
+#include "MyGLWidget.h"
 #include "math.h"
 //#include <gl\gl.h>			// Header File For The OpenGL32 Library
 //#include <gl\glu.h>			// Header File For The GLu32 Library

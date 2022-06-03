@@ -1,5 +1,5 @@
-#ifndef GLWIDGET_H
-#define GLWIDGET_H
+#ifndef MYGLWIDGET_H
+#define MYGLWIDGET_H
 
 #include <QOpenGLTexture>
 
@@ -21,26 +21,22 @@ typedef struct
         double z;
 } Vector;
 
-class GLWidget : public QGLWidget
+class MyGLWidget : public QGLWidget
 {
     Q_OBJECT
 public:
 
 
     Vector Buf[64][64];
-    explicit GLWidget(QWidget *parent = 0);
-    ~GLWidget();
+    explicit MyGLWidget(QWidget *parent = 0);
+    ~MyGLWidget();
 protected:
-    void DefineLuzDIFUSA();
-    void DefineLuzESPECULAR();
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-    //void mouseMoveEvent(QMouseEvent* event);
     void initializeGL();
     void paintGL();
     void resizeGL(int width,int height);
     void Keyboard_Operations();
-    //bool eventFilter(QObject *obj, QEvent *event);
 
 private:
     void drawCube();
